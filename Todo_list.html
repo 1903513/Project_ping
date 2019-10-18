@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+  <title>Todo_list</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/todo_list.css">
+
+  <meta name="theme-color" content="#fafafa">
+
+</head>
+<body>
+
+ <!-- boilerplate code --> 
+  <script src="js/vendor/modernizr-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+
+<!-- Add my application content here start -->
+<!--<div id="inputDIV" class="todolist not-done">-->
+	<h1>Create ToDo List</h1>
+	<p>Please enter your Todo list items and add them to Todo list table!</p>
+	<div class="container">
+	<table  class="tablestyle" id="inputTable">
+	<!--<form action="" class="form-control add-todo">onfocus="validateAlert()" onblur="hiddenAlert()"-->
+	<tr>
+	<td><div class="col-25"><span >User guide :</div>
+		<div class="col-75"><span class="showBtn" onclick="showGuide()">/show</span><span class="showBtn" onclick="hiddenGuide()">hidden</span></div>
+	</td>
+	</tr>
+	<tr id="guide" style="display:none">
+	<td>
+	<span><b>1. *validate type is 1-20bytes :0-9,a-z.A-Z,_ ja spaces</span>
+	<span><b>2.</span>
+	</td>
+	</tr>
+	<tr>
+	<td><div class="col-25">Task :</div>
+	<div class="col-75"><input name="Taskname" type="text" id="Taskname" size="20">
+	</div>
+	</td>
+	</tr>
+	<tr>
+	<td><div class="col-25">Priority :</div>
+	<div class="col-75">
+		<select name="priority" id="priority">
+		<option value="Highest" selected>Highest</option>
+		<option value="Medium">Medium</option>
+		<option value="Lowest">Lowest</option>
+		</select>
+	</div>
+	</td>
+	</tr>
+	<tr>
+	<td>
+	<!--<input type="button" value = "Submit" onclick="return additemtoTable()" >-->
+	<span onclick="return additemtoTable()" class="addBtn" id="addBtn">Add</span>
+	</td>
+	</tr>
+	<!--</form>-->
+	
+	</table>
+	</div>
+<!--</div>-->
+<br>
+<br>
+
+<div id="outputDIV" >
+	<h2>ToDo List:</h2><span style="float:middle;"><input type="checkbox" id="showAll" name="showAll" value="showAll">show all taskname</span>
+	<table style="width:50%" class="showtablestyle" id="outputTable" border="0">
+	
+	<tr>
+	<th style="width:20%">Task name 
+	<th style="width:10%">Priority 
+	<th style="width:5%">Delete 
+	</tr>
+	
+	</table>
+	
+</div>
+<!-- Add my application content here end -->
+
+
+<!-- script tag is where Javascript goes to -->
+    <script>
+		document.getElementById('showAll').checked = false;
+		
+        //show the guide
+		function showGuide() 
+		{
+			var x=document.getElementById("guide"); //get object
+			x.style.display= "block";
+			
+		}
+		//hidden the guide
+		function hiddenGuide()
+		{
+			var x=document.getElementById("guide");//get object
+			x.style.display= "none"; //hidden
+			
+		}
+		
+		
+		/* Add a "checked" symbol when clicking on a list item
+		var list = document.querySelector('td');
+			list.addEventListener('click', function(ev) {
+		if (ev.target.tagName === 'tr') {
+			ev.target.classList.toggle('checked');
+			}
+		}, false);*/
+		
+		//show all the task list
+		var show = document.getElementById('showAll');
+		show.addEventListener("click", function(){ 
+		if(show.checked == true)
+		{
+			for (i = 0; i < document.getElementsByClassName("close").length; i++) 
+		{
+			var div = document.getElementsByClassName("close")[i].parentElement;
+			div.style.display = "block";
+			div.style= "showtablestyle";
+		}
+		}
+		
+		});
+
+		
+		//submit check
+		function submitCheck()
+		{
+			var x=document.getElementById("Taskname");//get object
+			var text = document.getElementById("Taskname").value;
+			var str = text.trim();//Remove the spaces at the beginning and end of the string;
+			var validinputType = new RegExp("^[0-9a-zA-Z \-'_]{1,20}$"); //(Regular expression)validate type:0-9,a-z.A-Z,_ ja spaces
+		
+			if(str.length== 0) //input is none?
+			{
+				alert("The task can't empty,Plase input!"); //alert
+				return false;
+			}
+			else
+			{
+				if (validinputType.test(str)==false) //validatetype?
+				{ 
+　　　　			//alert("Valid type type is 1-20bytes :0-9,a-z.A-Z,_ ja spaces"); alert
+				return false;
+　　				} 
+				else
+				{
+				return true;
+				}
+				
+			}
+		}
+		
+		//add the item to Todo_list
+		function additemtoTable()
+		{
+			var invalidInput = submitCheck();
+			if(invalidInput == true)
+			{
+			var x=document.getElementById("Taskname");//get taskname object
+			var Y=document.getElementById("priority");//get priority object
+			var text = x.value; //get the value
+			var text2 = Y.value;//get the value
+			
+			/*var div = document.createElement('div');//drag and drop
+			div.setAttribute("draggable","true");*/
+			
+			var tr = document.createElement('tr');
+			tr.setAttribute("draggable",true);
+			tr.setAttribute('ondragover','dragOver(event)');
+			tr.setAttribute('ondragstart','dragStart(event)');
+			tr.setAttribute('ondragend','dragEnd(event)')
+			tr.setAttribute('id',"dragable");
+			
+			var td = tr.appendChild(document.createElement('td'));
+				td.innerHTML = text;
+			var td2 = tr.appendChild(document.createElement('td'));
+				td2.innerHTML = text2;
+			var td3 = tr.appendChild(document.createElement('td'));
+				td3.setAttribute("class","close");
+				td3.innerHTML = "<span>X</span>";
+				
+			document.getElementById("outputTable").appendChild(tr);
+				
+			for (i = 0; i < close.length; i++) 
+		{
+			close[i].onclick = function() 
+			{
+			var div = this.parentElement;
+			div.style.display = "none";
+			document.getElementById('showAll').checked = false;
+			}
+		}	
+				
+			
+			document.getElementById("Taskname").value = null;
+			document.getElementById("Taskname").style.border ="1px solid #ccc";
+			document.getElementById("Taskname").focus(); 
+			document.getElementById('showAll').checked = false;
+			
+			return true;
+			}
+			else
+			{   
+				alert("Valid type is 1-20bytes :0-9,a-z.A-Z,_ ja spaces!");
+				document.getElementById("Taskname").value = null;
+				document.getElementById("Taskname").style.border = "2px solid red";
+				document.getElementById("Taskname").focus(); 
+				//validateAlert();
+				return false;
+			}
+			
+		}
+		
+		// Click on a close button to hide the current list item
+		var close = document.getElementsByClassName("close");
+		var i;
+		for (i = 0; i < close.length; i++) 
+		{
+			close[i].onclick = function() 
+			{
+			var div = this.parentElement;
+			div.style.display = "none";
+			document.getElementById('showAll').checked = false;
+			}
+		}
+		
+		/*// Add a "checked" symbol when clicking on a list item
+		var list = document.querySelector('table');
+		list.addEventListener('click', function(ev) {
+		if (ev.target.tagName === 'tr') {
+			ev.target.classList.toggle('checked');
+			}
+		}, false);
+		*/
+		
+		var selected
+
+		function dragOver( e ) {
+		if ( isBefore( selected, e.target ) ) e.target.parentNode.insertBefore( selected, e.target )
+		else e.target.parentNode.insertBefore( selected, e.target.nextSibling )
+		}
+
+		function dragEnd() {
+		selected = null
+		}
+
+		function dragStart( e ) {
+		e.dataTransfer.effectAllowed = "move"
+		//e.dataTransfer.setData( "text/plain", null )
+		selected = e.target
+		}
+
+		function isBefore( el1, el2 ) {
+		var cur
+		if ( el2.parentNode === el1.parentNode ) {
+			for ( cur = el1.previousSibling; cur; cur = cur.previousSibling ) {
+			if (cur === el2) return true
+			}
+		} else return false;
+		}
+		
+		
+    </script>
+
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async></script>
+
+
+</body>
+</html>
