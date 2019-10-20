@@ -38,10 +38,14 @@
 		<div class="col-75"><span class="showBtn" onclick="showGuide()">/show</span><span class="showBtn" onclick="hiddenGuide()">hidden</span></div>
 	</td>
 	</tr>
+	<tr>
+	<td>&nbsp;</td>
+	</tr>
 	<tr id="guide" style="display:none">
 	<td>
-	<span><b>1. *validate type is 1-20bytes :0-9,a-z.A-Z,_ ja spaces</span>
-	<span><b>2.</span>
+	<span><b>1.Validate task is 1-20 characters, include 0-9,a-z.A-Z,_ or  spaces<br></span>
+	<span><b>2.Click the show all checkbox to list all of the task<br></span>
+	<span><b>3.Drag and drop the task to sort the task</span>
 	</td>
 	</tr>
 	<tr>
@@ -76,7 +80,7 @@
 <br>
 
 <div id="outputDIV" >
-	<h2>ToDo List:</h2><span style="float:middle;"><input type="checkbox" id="showAll" name="showAll" value="showAll">show all taskname</span>
+	<h2>ToDo List:</h2><span style="float:middle;">&nbsp;&nbsp;<input type="checkbox" id="showAll" name="showAll" value="showAll">show all taskname</span>
 	<table style="width:50%" class="showtablestyle" id="outputTable" border="0">
 	
 	<tr>
@@ -179,9 +183,10 @@
 			
 			var tr = document.createElement('tr');
 			tr.setAttribute("draggable",true);
-			tr.setAttribute('ondragover','dragOver(event)');
+			//tr.setAttribute('ondragover','dragOver(event)');
 			tr.setAttribute('ondragstart','dragStart(event)');
-			tr.setAttribute('ondragend','dragEnd(event)')
+			//tr.setAttribute('ondragend','dragEnd(event)');
+			tr.setAttribute('ondragenter','dragEnter(event)')
 			tr.setAttribute('id',"dragable");
 			
 			var td = tr.appendChild(document.createElement('td'));
@@ -237,40 +242,63 @@
 			}
 		}
 		
-		/*// Add a "checked" symbol when clicking on a list item
-		var list = document.querySelector('table');
-		list.addEventListener('click', function(ev) {
-		if (ev.target.tagName === 'tr') {
-			ev.target.classList.toggle('checked');
-			}
-		}, false);
-		*/
-		
+		/*drag and drop
 		var selected
+		
+		function dragStart(e) {
+		e.dataTransfer.effectAllowed = "move";
+		e.dataTransfer.setData( "text/html", null );
+		selected = e.target;
+		}
 
-		function dragOver( e ) {
+		function dragOver(e) {
 		if ( isBefore( selected, e.target ) ) e.target.parentNode.insertBefore( selected, e.target )
 		else e.target.parentNode.insertBefore( selected, e.target.nextSibling )
 		}
 
 		function dragEnd() {
-		selected = null
+		selected = null;
 		}
 
-		function dragStart( e ) {
-		e.dataTransfer.effectAllowed = "move"
-		//e.dataTransfer.setData( "text/plain", null )
-		selected = e.target
-		}
 
-		function isBefore( el1, el2 ) {
-		var cur
+		function isBefore(el1,el2) {
+		var cur;
 		if ( el2.parentNode === el1.parentNode ) {
 			for ( cur = el1.previousSibling; cur; cur = cur.previousSibling ) {
-			if (cur === el2) return true
+			if (cur === el2) return true;
 			}
 		} else return false;
+		}*/
+		var source;
+		
+		function dragStart(e) {
+			source = e.target;
+			e.dataTransfer.effectAllowed = 'move';
 		}
+
+		function isbefore(a, b) {
+			if (a.parentNode == b.parentNode) {
+			for (var cur = a; cur; cur = cur.previousSibling) {
+            if (cur === b) {
+                return true;
+            }
+			}
+			}
+		return false;
+		}
+
+		function dragEnter(e) {
+		var targetelem = e.target;
+		if (targetelem.nodeName == "TD") {
+			targetelem = targetelem.parentNode;   
+		}  
+
+		if (isbefore(source, targetelem)) {
+			targetelem.parentNode.insertBefore(source, targetelem);
+		} else {
+        targetelem.parentNode.insertBefore(source, targetelem.nextSibling);
+		}
+		}		
 		
 		
     </script>
