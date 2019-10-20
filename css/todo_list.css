@@ -104,14 +104,14 @@ label {
 }
 
 
-/* Style the close button */
-.close {
+/* Style the delete button */
+.del {
   position: relative;
   right: 0;
   top: 0;
 }
 
-.close:hover {
+.del:hover {
   background-color: #4CAF50;
   color: white;
 }
